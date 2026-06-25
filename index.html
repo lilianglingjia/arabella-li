@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>李梁伶佳 | Lianglingjia Li</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   DESIGN SYSTEM — 轻度参考 CSS Design Awards 的留白/排版节奏
+   ================================================================ */
+:root {
+  --bg: #060a12;
+  --bg-elevated: #0a101f;
+  --bg-card: #0d1528;
+  --text: #eef1f7;
+  --text-secondary: #8893a8;
+  --text-muted: #4a5568;
+  --accent: #c8a35a;
+  --accent-light: #e2c77a;
+  --accent-glow: rgba(200,163,90,0.12);
+  --accent-strong: rgba(200,163,90,0.25);
+  --border: #16223a;
+  --border-hover: #243352;
+  --gradient: linear-gradient(135deg, #060a12 0%, #0a1424 50%, #0d1a30 100%);
+  --gold-grad: linear-gradient(135deg, #c8a35a 0%, #e2c77a 50%, #c8a35a 100%);
+  --gold-grad-subtle: linear-gradient(135deg, rgba(200,163,90,0.4) 0%, rgba(226,199,122,0.5) 50%, rgba(200,163,90,0.4) 100%);
+  --glass: rgba(10,16,31,0.82);
+  --section-gap: 120px;
+  --card-radius: 12px;
+}
+
+[data-theme="light"] {
+  --bg: #f4f6fa;
+  --bg-elevated: #ffffff;
+  --bg-card: #eef2f8;
+  --text: #0d1528;
+  --text-secondary: #4a5568;
+  --text-muted: #8893a8;
+  --accent: #9a7a1e;
+  --accent-light: #b8951f;
+  --accent-glow: rgba(154,122,30,0.08);
+  --accent-strong: rgba(154,122,30,0.2);
+  --border: #dde4f0;
+  --border-hover: #c8d4e6;
+  --gradient: linear-gradient(135deg, #f4f6fa 0%, #e8edf6 50%, #dde4f0 100%);
+  --glass: rgba(255,255,255,0.88);
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.4s, color 0.4s;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle ambient background */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 85%, rgba(200,163,90,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 15%, rgba(13,26,48,0.5) 0%, transparent 55%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ===== Typography Utilities ===== */
+.serif { font-family: 'Playfair Display', serif; }
+.section-label {
+  font-size: 0.8rem;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 48px;
+  display: flex; align-items: center; gap: 20px;
+  font-weight: 600;
+}
+.section-label::before {
+  content: ""; width: 40px; height: 2px; background: var(--accent); opacity: 0.8;
+}
+.section-label::after {
+  content: ""; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+/* ===== Navigation ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: all 0.4s;
+}
+nav.scrolled {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-container {
+  max-width: 1240px; margin: 0 auto;
+  padding: 0 48px; display: flex;
+  align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700; font-size: 1.3rem;
+  color: var(--accent); letter-spacing: 3px;
+  cursor: pointer; transition: color 0.3s;
+}
+.nav-links { display: flex; gap: 44px; list-style: none; }
+.nav-links a {
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 0.78rem; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  transition: color 0.3s; position: relative;
+  padding: 4px 0;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--accent); }
+.nav-links a::after {
+  content: ""; position: absolute;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 0; height: 1px; background: var(--accent);
+  transition: width 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+}
+.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+.nav-controls { display: flex; gap: 8px; align-items: center; }
+.btn-icon {
+  width: 38px; height: 38px; border-radius: 10px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text-secondary); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s; font-size: 0.8rem; font-weight: 600;
+}
+.btn-icon:hover {
+  border-color: var(--accent); color: var(--accent);
+  background: var(--accent-glow); transform: translateY(-1px);
+}
+
+/* ===== Main Container ===== */
+main { position: relative; z-index: 1; }
+
+/* ===== Section Container ===== */
+.section {
+  max-width: 1240px; margin: 0 auto;
+  padding: var(--section-gap) 48px 0;
+}
+
+/* ================================================================
+   HERO — 逐行文字淡入滑出
+   ================================================================ */
+.hero {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 80px; align-items: center;
+  min-height: calc(100vh - 64px);
+  padding: 0 48px;
+  max-width: 1240px; margin: 0 auto;
+}
+
+.hero-left { padding-top: 40px; }
+
+/* Hero lines — each gets its own reveal */
+.hero-line {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-line.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: var(--accent); font-size: 0.72rem;
+  font-weight: 600; letter-spacing: 4px;
+  text-transform: uppercase; margin-bottom: 24px;
+}
+.hero-tag::before { content: ""; width: 32px; height: 1px; background: var(--accent); }
+
+.hero-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 5rem; font-weight: 700;
+  line-height: 1.05; margin-bottom: 16px;
+  background: var(--gold-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-title { font-size: 1.15rem; color: var(--text-secondary); font-weight: 400; margin-bottom: 28px; }
+.hero-body { color: var(--text-secondary); font-size: 0.95rem; max-width: 480px; margin-bottom: 36px; line-height: 1.85; }
+
+.hero-btns { display: flex; gap: 16px; }
+
+/* ===== Buttons ===== */
+.btn-primary, .btn-secondary {
+  padding: 13px 32px; border-radius: 10px;
+  font-weight: 600; font-size: 0.9rem; cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+  text-decoration: none; display: inline-flex;
+  align-items: center; gap: 8px;
+  letter-spacing: 0.3px;
+  position: relative; overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-primary {
+  background: var(--gold-grad);
+  color: #0a1628; border: none;
+  box-shadow: 0 2px 12px rgba(200,163,90,0.15);
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(200,163,90,0.3);
+}
+.btn-primary:active {
+  transform: translateY(-1px) scale(0.97);
+  box-shadow: 0 4px 16px rgba(200,163,90,0.2);
+  transition: all 0.1s;
+}
+
+.btn-secondary {
+  background: transparent; color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover {
+  border-color: var(--accent); color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+.btn-secondary:active {
+  transform: translateY(0) scale(0.97);
+  transition: all 0.1s;
+}
+
+/* ===== Hero Photo ===== */
+.hero-right { display: flex; justify-content: center; align-items: center; }
+.hero-photo-ring {
+  width: 380px; height: 380px; border-radius: 50%;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-photo-ring::before {
+  content: ""; position: absolute;
+  inset: -5px; border-radius: 50%;
+  background: var(--gold-grad);
+  padding: 3px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: ringRotate 24s linear infinite;
+}
+@keyframes ringRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.hero-photo-ring img {
+  width: 360px; height: 360px; border-radius: 50%;
+  object-fit: cover; border: 4px solid var(--bg);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.45);
+}
+
+/* ===== Photo Carousel (compact, between hero and content) ===== */
+.photo-strip {
+  padding: 24px 0 0; overflow: hidden; position: relative;
+  max-width: 1240px; margin: 0 auto;
+}
+.photo-strip .section-label { margin-bottom: 24px; padding: 0 48px; }
+.photo-track {
+  display: flex; gap: 16px;
+  animation: scrollPhotos 24s linear infinite;
+  width: max-content;
+}
+.photo-track:hover { animation-play-state: paused; }
+@keyframes scrollPhotos {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.photo-item {
+  width: 260px; height: 350px; border-radius: 14px;
+  overflow: hidden; flex-shrink: 0; position: relative;
+  border: 1px solid var(--border); transition: all 0.4s;
+}
+.photo-item:hover {
+  transform: translateY(-8px) scale(1.03);
+  border-color: var(--accent);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.35);
+}
+.photo-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+.photo-item:hover img { transform: scale(1.1); }
+
+/* ================================================================
+   SCROLL REVEAL
+   ================================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Staggered children */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-stagger.revealed > *:nth-child(1) { transition-delay: 0.05s; }
+.reveal-stagger.revealed > *:nth-child(2) { transition-delay: 0.12s; }
+.reveal-stagger.revealed > *:nth-child(3) { transition-delay: 0.19s; }
+.reveal-stagger.revealed > *:nth-child(4) { transition-delay: 0.26s; }
+.reveal-stagger.revealed > *:nth-child(5) { transition-delay: 0.33s; }
+.reveal-stagger.revealed > *:nth-child(6) { transition-delay: 0.40s; }
+.reveal-stagger.revealed > * {
+  opacity: 1; transform: translateY(0);
+}
+
+/* ===== Info Grid (About + Education) ===== */
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.info-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--card-radius); padding: 36px;
+  transition: all 0.35s;
+}
+.info-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.2);
+}
+.info-card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.info-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--accent-glow); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent); font-size: 1.1rem;
+}
+.info-card h3 { font-size: 1rem; font-weight: 600; color: var(--text); letter-spacing: 0.3px; }
+.info-card p, .info-card li { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.75; }
+.info-card strong { color: var(--text); font-weight: 600; }
+
+/* ===== About Quote (Sticky) ===== */
+.about-quote {
+  margin-bottom: 32px; padding: 12px 0 32px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 80px; z-index: 2;
+  background: var(--bg);
+}
+.about-quote p {
+  font-size: 1.05rem; line-height: 1.9; color: var(--text-secondary);
+  max-width: 800px;
+}
+
+/* ===== Timeline (Experience) ===== */
+.timeline {
+  position: relative;
+  padding-left: 40px;
+}
+.timeline::before {
+  content: "";
+  position: absolute; left: 15px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--border) 100%);
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 48px;
+  padding-left: 48px;
+}
+.tl-item:last-child { margin-bottom: 0; }
+.tl-dot {
+  position: absolute; left: -29px; top: 6px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.tl-date {
+  font-size: 0.72rem; color: var(--accent); font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;
+}
+.tl-title {
+  font-size: 1.1rem; font-weight: 600; color: var(--text);
+  margin-bottom: 4px;
+}
+.tl-company {
+  font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;
+}
+.tl-desc { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; }
+.tl-desc ul { list-style: none; padding: 0; }
+.tl-desc li {
+  padding-left: 16px; position: relative; margin-bottom: 5px;
+}
+.tl-desc li::before { content: "›"; position: absolute; left: 0; color: var(--accent); font-weight: 600; }
+
+@media (max-width: 768px) {
+  .timeline { padding-left: 24px; }
+  .tl-item { padding-left: 32px; }
+  .tl-dot { left: -20px; width: 10px; height: 10px; }
+  .life-item.wide { grid-column: span 1; }
+  .life-item.tall { grid-row: span 1; }
+  .life-item.big { grid-column: span 2; grid-row: span 1; }
+}
+
+/* ===== Skills Tags ===== */
+.skills-section { margin-bottom: 32px; }
+.skills-section h2 {
+  font-size: 0.9rem; font-weight: 600; color: var(--text);
+  margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+}
+.skills-section h2::before { content: ""; width: 3px; height: 16px; border-radius: 2px; background: var(--accent); }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.skill-tag {
+  padding: 8px 18px; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 0.82rem; color: var(--text-secondary);
+  transition: all 0.3s; cursor: default;
+}
+.skill-tag:hover {
+  border-color: var(--accent); color: var(--accent);
+  background: var(--accent-glow);
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 2px var(--accent-strong);
+}
+
+/* ================================================================
+   生活剪影 — Photo Gallery with category filter
+   ================================================================ */
+.life-filter {
+  display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px;
+}
+.life-filter-btn {
+  padding: 8px 22px; border-radius: 20px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text-secondary); font-size: 0.8rem;
+  font-weight: 500; cursor: pointer; transition: all 0.3s;
+  letter-spacing: 0.5px;
+}
+.life-filter-btn:hover {
+  border-color: var(--accent); color: var(--accent);
+}
+.life-filter-btn.active {
+  background: var(--accent-glow); border-color: var(--accent); color: var(--accent);
+}
+
+.life-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  grid-auto-flow: dense;
+  grid-auto-rows: 200px;
+}
+.life-item {
+  position: relative; border-radius: var(--card-radius);
+  overflow: hidden; cursor: pointer;
+  border: 1px solid var(--border);
+  transition: all 0.35s;
+  aspect-ratio: auto;
+  min-height: 0;
+}
+.life-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.life-item:hover img { transform: scale(1.1); filter: brightness(0.85); }
+/* Bento sizes */
+.life-item.wide { grid-column: span 2; }
+.life-item.tall { grid-row: span 2; }
+.life-item.big { grid-column: span 2; grid-row: span 2; }
+.life-item.hidden {
+  display: none;
+}
+.life-item:hover {
+  transform: translateY(-5px) scale(1.02);
+  border-color: var(--accent);
+  box-shadow: 0 20px 48px rgba(0,0,0,0.4);
+}
+.life-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.life-item:hover img { transform: scale(1.1); filter: brightness(0.85); }
+
+.life-caption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 16px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.75));
+  color: #fff; font-size: 0.78rem; font-weight: 500;
+  opacity: 0; transform: translateY(8px);
+  transition: all 0.3s;
+}
+.life-item:hover .life-caption { opacity: 1; transform: translateY(0); }
+.life-caption .life-cat {
+  font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase;
+  opacity: 0.7; display: block; margin-bottom: 2px;
+}
+
+/* ===== Contact Bar ===== */
+.contact-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 24px; }
+.contact-item {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--card-radius); padding: 24px;
+  display: flex; align-items: center; gap: 16px;
+  transition: all 0.35s; text-decoration: none;
+}
+.contact-item:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.15);
+}
+.contact-item-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--accent-glow); display: flex;
+  align-items: center; justify-content: center;
+  color: var(--accent); font-size: 1.1rem; flex-shrink: 0;
+}
+.contact-item-info h4 {
+  font-size: 0.7rem; color: var(--text-muted);
+  font-weight: 500; text-transform: uppercase;
+  letter-spacing: 1.5px; margin-bottom: 3px;
+}
+.contact-item-info p, .contact-item-info a {
+  font-size: 0.9rem; color: var(--text); text-decoration: none; font-weight: 500;
+  transition: color 0.3s;
+}
+.contact-item:hover .contact-item-info p,
+.contact-item:hover .contact-item-info a { color: var(--accent); }
+
+@media (max-width: 1000px) { .contact-bar { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .contact-bar { grid-template-columns: 1fr 1fr; } }
+
+/* ===== Footer ===== */
+footer {
+  position: relative; max-width: 1240px;
+  margin: var(--section-gap) auto 0; padding: 32px 48px;
+  border-top: 1px solid var(--border);
+}
+.footer-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-inner p { color: var(--text-muted); font-size: 0.76rem; }
+.footer-links { display: flex; gap: 12px; align-items: center; }
+.footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.8rem; transition: color 0.3s; }
+.footer-links a:hover { color: var(--accent); }
+.footer-links span { color: var(--text-muted); }
+.back-to-top {
+  position: absolute; right: 48px; top: -20px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--accent); color: #0a1628; border: none;
+  font-size: 1.1rem; font-weight: 700; cursor: pointer;
+  transition: all 0.3s; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(200,163,90,0.25);
+}
+.back-to-top:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(200,163,90,0.35); }
+
+@media (max-width: 600px) {
+  footer { padding: 24px 16px; }
+  .footer-inner { flex-direction: column; text-align: center; }
+  .back-to-top { right: 16px; }
+}
+
+/* ================================================================
+   MOBILE MENU (full-screen overlay)
+   ================================================================ */
+.mobile-toggle { display: none; background: none; border: none; color: var(--text); font-size: 1.4rem; cursor: pointer; }
+.mobile-overlay {
+  display: none; position: fixed; inset: 0; z-index: 2000;
+  background: var(--bg);
+  flex-direction: column; align-items: center; justify-content: center; gap: 40px;
+}
+.mobile-overlay.open { display: flex; }
+.mobile-overlay-close {
+  position: absolute; top: 24px; right: 24px;
+  background: none; border: none; color: var(--text);
+  font-size: 1.5rem; cursor: pointer; padding: 8px;
+}
+.mobile-overlay a {
+  color: var(--text-secondary); text-decoration: none;
+  font-size: 1.4rem; font-weight: 500; letter-spacing: 2px;
+  text-transform: uppercase; transition: color 0.3s;
+}
+.mobile-overlay a:hover { color: var(--accent); }
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+  from { opacity:0; transform: translateY(40px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+/* ================================================================
+   RESPONSIVE — 多断点
+   ================================================================ */
+
+/* Tablet landscape / small desktop (768px - 1000px) */
+@media (max-width: 1000px) {
+  .hero { grid-template-columns: 1fr; text-align: center; gap: 48px; min-height: auto; padding-top: 24px; }
+  .hero-name { font-size: 3.2rem; }
+  .hero-body { margin: 0 auto 28px; }
+  .hero-btns { justify-content: center; }
+  .hero-photo-ring { width: 300px; height: 300px; }
+  .hero-photo-ring img { width: 280px; height: 280px; }
+  .info-grid { grid-template-columns: 1fr; }
+  .contact-bar { grid-template-columns: repeat(2, 1fr); }
+  .life-grid { grid-template-columns: repeat(3, 1fr); }
+  .nav-links { display: none; }
+  .mobile-toggle { display: block; }
+  .section { padding: 80px 32px 0; }
+  :root { --section-gap: 80px; }
+}
+
+/* Tablet portrait (600px - 768px) */
+@media (max-width: 768px) {
+  .hero { padding: 0 24px; }
+  .hero-name { font-size: 2.6rem; }
+  .hero-title { font-size: 1rem; }
+  .hero-body { font-size: 0.88rem; }
+  .hero-photo-ring { width: 260px; height: 260px; }
+  .hero-photo-ring img { width: 244px; height: 244px; }
+  .life-grid { grid-template-columns: repeat(2, 1fr); }
+  .section { padding: 60px 20px 0; }
+  .nav-container { padding: 0 24px; }
+  :root { --section-gap: 60px; }
+  .section-label { font-size: 0.62rem; letter-spacing: 3px; }
+}
+
+/* Phone (< 600px) */
+@media (max-width: 600px) {
+  .hero { padding: 0 16px; gap: 32px; }
+  .hero-name { font-size: 2rem; }
+  .hero-title { font-size: 0.92rem; }
+  .hero-body { font-size: 0.85rem; }
+  .hero-btns { flex-direction: column; gap: 10px; }
+  .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+  .hero-photo-ring { width: 200px; height: 200px; }
+  .hero-photo-ring img { width: 188px; height: 188px; }
+  .contact-bar { grid-template-columns: 1fr 1fr; }
+  .life-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .life-filter { gap: 6px; }
+  .life-filter-btn { padding: 6px 14px; font-size: 0.72rem; }
+  .section { padding: 48px 16px 0; }
+  .nav-container { padding: 0 16px; }
+  .photo-item { width: 180px; height: 250px; }
+  :root { --section-gap: 48px; }
+  .info-card { padding: 24px; }
+}
+
+/* ===== Lightbox ===== */
+.lightbox {
+  display: none; position: fixed; inset: 0; z-index: 3000;
+  background: rgba(0,0,0,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  align-items: center; justify-content: center;
+  flex-direction: column;
+  opacity: 0; transition: opacity 0.3s;
+}
+.lightbox.open { display: flex; opacity: 1; }
+.lightbox img {
+  max-width: 90vw; max-height: 75vh;
+  border-radius: 8px; box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  object-fit: contain;
+  transition: transform 0.3s;
+}
+.lightbox-caption {
+  margin-top: 20px; color: #ccc; font-size: 0.85rem;
+  text-align: center; max-width: 80vw;
+}
+.lightbox-close {
+  position: absolute; top: 24px; right: 32px;
+  background: none; border: none; color: #fff;
+  font-size: 2rem; cursor: pointer; padding: 8px;
+  opacity: 0.7; transition: opacity 0.3s; z-index: 3001;
+}
+.lightbox-close:hover { opacity: 1; }
+.lightbox-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #fff; font-size: 1.6rem; cursor: pointer;
+  width: 48px; height: 48px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s; z-index: 3001;
+}
+.lightbox-arrow:hover { background: rgba(255,255,255,0.18); }
+.lightbox-prev { left: 24px; }
+.lightbox-next { right: 24px; }
+
+@media (max-width: 600px) {
+  .lightbox img { max-width: 95vw; max-height: 65vh; }
+  .lightbox-arrow { width: 40px; height: 40px; font-size: 1.2rem; }
+  .lightbox-prev { left: 8px; }
+  .lightbox-next { right: 8px; }
+}
+
+/* ===== 贵阳板块 ===== */
+.gy-hero-card {
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 48px; align-items: center;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--card-radius); padding: 40px;
+  margin-bottom: 24px;
+}
+.gy-hero-text h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; font-weight: 700;
+  background: var(--gold-grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+}
+.gy-hero-stats { display: flex; gap: 16px; flex-wrap: wrap; }
+.gy-stat {
+  text-align: center;
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  transition: all 0.3s;
+}
+.gy-stat:hover {
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px var(--accent-glow);
+  transform: translateY(-2px);
+}
+.gy-stat-num {
+  display: block; font-family: 'Playfair Display', serif;
+  font-size: 2.2rem; font-weight: 700; color: var(--accent);
+  line-height: 1.1; transition: all 0.3s;
+}
+.gy-stat span:last-child {
+  font-size: 0.7rem; color: var(--text-muted);
+  letter-spacing: 1px; text-transform: uppercase;
+}
+.gy-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.gy-gallery {
+  display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;
+}
+.gy-gallery-hero {
+  border-radius: var(--card-radius); overflow: hidden;
+  border: 1px solid var(--border); height: 380px;
+}
+.gy-gallery-hero img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.gy-gallery-hero:hover img { transform: scale(1.03); }
+.gy-gallery-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+.gy-gallery-item {
+  border-radius: var(--card-radius); overflow: hidden;
+  border: 1px solid var(--border); aspect-ratio: 4/3;
+}
+.gy-gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.gy-gallery-item:hover img { transform: scale(1.08); }
+
+@media (max-width: 768px) {
+  .gy-gallery-hero { height: 240px; }
+  .gy-gallery-row { grid-template-columns: repeat(2, 1fr); }
+}
+.gy-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--card-radius); padding: 32px;
+  transition: all 0.35s;
+}
+.gy-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+.gy-card-icon { font-size: 1.6rem; margin-bottom: 12px; }
+.gy-card h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+.gy-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; }
+
+@media (max-width: 768px) {
+  .gy-hero-card { grid-template-columns: 1fr; gap: 28px; padding: 28px; }
+  .gy-hero-stats { justify-content: flex-start; gap: 24px; flex-wrap: wrap; }
+  .gy-hero-text h2 { font-size: 1.5rem; }
+  .gy-grid { grid-template-columns: 1fr; }
+  .gy-gallery { grid-template-columns: repeat(2, 1fr); }
+  .gy-gallery-item.wide { grid-column: span 2; }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .hero-line { transition: opacity 0.3s; transform: none; }
+  .hero-line.revealed { transform: none; }
+  .reveal, .reveal-stagger > * { transition: opacity 0.3s; transform: none; }
+  .reveal.revealed, .reveal-stagger.revealed > * { transform: none; }
+  .hero-photo-ring::before { animation: none; }
+  .photo-track { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav id="navbar">
+  <div class="nav-container">
+    <div class="nav-logo" onclick="scrollToTop()">LLLJ</div>
+    <ul class="nav-links">
+      <li><a href="#about" class="nav-link" data-key="nav_about">关于</a></li>
+      <li><a href="#exp" class="nav-link" data-key="nav_exp">经历</a></li>
+      <li><a href="#skills" class="nav-link" data-key="nav_skills">技能</a></li>
+      <li><a href="#life" class="nav-link" data-key="nav_life">生活</a></li>
+      <li><a href="#guiyang" class="nav-link" data-key="nav_guiyang">家乡</a></li>
+      <li><a href="#contact" class="nav-link" data-key="nav_contact">联系</a></li>
+    </ul>
+    <div class="nav-controls">
+      <button class="btn-icon" id="langBtn">中</button>
+      <button class="btn-icon" id="themeBtn">☀</button>
+    </div>
+    <button class="mobile-toggle" id="mobileToggle">☰</button>
+  </div>
+</nav>
+
+<!-- Mobile Overlay Menu -->
+<div class="mobile-overlay" id="mobileOverlay">
+  <button class="mobile-overlay-close" id="mobileClose">✕</button>
+  <a href="#about" class="nav-link" data-key="nav_about">关于</a>
+  <a href="#exp" class="nav-link" data-key="nav_exp">经历</a>
+  <a href="#skills" class="nav-link" data-key="nav_skills">技能</a>
+  <a href="#life" class="nav-link" data-key="nav_life">生活</a>
+  <a href="#guiyang" class="nav-link" data-key="nav_guiyang">家乡</a>
+  <a href="#contact" class="nav-link" data-key="nav_contact">联系</a>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lbClose">✕</button>
+  <button class="lightbox-arrow lightbox-prev" id="lbPrev">‹</button>
+  <img src="" alt="" id="lbImg" loading="lazy">
+  <div class="lightbox-caption" id="lbCaption"></div>
+  <button class="lightbox-arrow lightbox-next" id="lbNext">›</button>
+</div>
+
+<main>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-left" id="heroLines">
+    <div class="hero-line" data-delay="0">
+      <div class="hero-tag"><span data-key="hero_label">Personal Portfolio</span></div>
+    </div>
+    <div class="hero-line" data-delay="1">
+      <h1 class="hero-name" data-key="hero_name">李梁伶佳</h1>
+    </div>
+    <div class="hero-line" data-delay="2">
+      <p class="hero-title" data-key="hero_title">香港浸会大学 · 国际金融学</p>
+    </div>
+    <div class="hero-line" data-delay="3">
+      <div class="hero-btns">
+        <a href="#about" class="btn-primary" data-key="btn_about">了解更多</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-photo-ring">
+      <img src="web_photo_portrait.jpg" alt="李梁伶佳" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ===== PHOTO CAROUSEL ===== -->
+<div class="photo-strip">
+  <div class="section-label"><span data-key="gallery_label">Gallery</span></div>
+  <div class="photo-track">
+    <div class="photo-item"><img src="web_photo_1.jpg" alt="" loading="lazy"></div>
+    <div class="photo-item"><img src="web_photo_2.jpg" alt="" loading="lazy"></div>
+    <div class="photo-item"><img src="web_photo_3.jpg" alt="" loading="lazy"></div>
+    <div class="photo-item"><img src="web_photo_half.jpg" alt="" loading="lazy"></div>
+    <div class="photo-item"><img src="web_photo_portrait.jpg" alt="" loading="lazy"></div>
+    <div class="photo-item"><img src="web_photo_1.jpg" alt="" loading="lazy"></div>
+    <div class="photo-item"><img src="web_photo_2.jpg" alt="" loading="lazy"></div>
+    <div class="photo-item"><img src="web_photo_3.jpg" alt="" loading="lazy"></div>
+    <div class="photo-item"><img src="web_photo_half.jpg" alt="" loading="lazy"></div>
+    <div class="photo-item"><img src="web_photo_portrait.jpg" alt="" loading="lazy"></div>
+  </div>
+</div>
+
+<!-- ===== ABOUT & EDUCATION ===== -->
+<div class="section reveal" id="about">
+  <div class="section-label"><span data-key="about_label">About & Education</span></div>
+  <div class="about-quote">
+    <p data-key="about_desc">实战派，不纸上谈兵。从融通国际、东亚银行到AXA安盛、雀巢项目，金融的保险、银行、资管、快消四条线都踩过。能扛事——400+人迎新营靠执行不靠运气；对新鲜事物有胃口——在银行实习主动接触AI，做商业策划直接落地AI+数据看板。活得有劲，冬天滑雪夏天跳舞，从西藏走到英国，在北京还修了对外经贸的英语演讲课。金融生的脑子，旅行者的心。</p>
+  </div>
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-icon">🎓</div>
+        <h3 data-key="edu_title">教育背景</h3>
+      </div>
+      <p data-key="edu_desc"><strong>香港浸会大学</strong>（2024.09 - 2028.08）<br>BBA 工商管理学士，主修国际金融学（FINANCE）</p>
+    </div>
+    <div class="info-card">
+      <div class="info-card-header">
+        <div class="info-icon">👤</div>
+        <h3 data-key="about_title">个人简介</h3>
+      </div>
+      <p data-key="about_sub">香港在读金融生，坐标香港。热爱滑雪、跳舞、旅行，在金融与生活之间找到自己的节奏。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EXPERIENCE ===== -->
+<div class="section reveal" id="exp">
+  <div class="section-label"><span data-key="exp_label">Experience</span></div>
+  <div class="timeline reveal-stagger">
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date" data-key="exp2_date">2026.02</div>
+      <div class="tl-title" data-key="exp2_title">AXA 安盛</div>
+      <div class="tl-company" data-key="exp2_company">线上项目</div>
+      <div class="tl-desc"><ul>
+        <li data-key="exp2_1">快速交付项目核心任务</li>
+        <li data-key="exp2_2">梳理流程提升协作效率</li>
+        <li data-key="exp2_3">获总监高度认可</li>
+      </ul></div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date" data-key="exp3_date">2025.07</div>
+      <div class="tl-title" data-key="exp3_title">东亚银行（天津）</div>
+      <div class="tl-company" data-key="exp3_company">市场条线助理</div>
+      <div class="tl-desc"><ul>
+        <li data-key="exp3_1">市场业务运营与客户对接</li>
+        <li data-key="exp3_2">边干边学 AI 应用</li>
+      </ul></div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date" data-key="exp4_date">2025.05</div>
+      <div class="tl-title" data-key="exp4_title">融通国际资产管理</div>
+      <div class="tl-company" data-key="exp4_company">商务拓展实习生 · 香港</div>
+      <div class="tl-desc"><ul>
+        <li data-key="exp4_1">官网内容更新与翻译</li>
+        <li data-key="exp4_2">基金合同翻译审核</li>
+      </ul></div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date" data-key="exp5_date">2025.04 - 2026.04</div>
+      <div class="tl-title" data-key="exp5_title">HKBU 内地香港青年联合会</div>
+      <div class="tl-company" data-key="exp5_company">26届内务副主席</div>
+      <div class="tl-desc"><ul>
+        <li data-key="exp5_1">主导迎新营策划</li>
+        <li data-key="exp5_2">创办广东话班</li>
+        <li data-key="exp5_3">联校合作共赢</li>
+      </ul></div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-date" data-key="exp6_date">2024 - 2026</div>
+      <div class="tl-title" data-key="exp6_title">商业竞赛</div>
+      <div class="tl-company" data-key="exp6_company">多场比赛 & 商业策划</div>
+      <div class="tl-desc"><ul>
+        <li data-key="exp6_1">全港大专生商业个案比赛</li>
+        <li data-key="exp6_2">HKUFP Awards</li>
+        <li data-key="exp6_3">KPMG ESG比赛</li>
+        <li data-key="exp6_4">星火伙伴 · 雀巢母婴小店增长（AI+数据看板）</li>
+      </ul></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== SKILLS ===== -->
+<div class="section reveal" id="skills">
+  <div class="section-label"><span data-key="skills_label">Skills</span></div>
+  <div class="skills-section">
+    <h2 data-key="skills_tools">办公工具</h2>
+    <div class="skill-tags">
+      <span class="skill-tag" data-key="tag_excel">Excel 数据建模</span>
+      <span class="skill-tag" data-key="tag_ppt">PowerPoint</span>
+      <span class="skill-tag" data-key="tag_xiumi">秀米</span>
+      <span class="skill-tag" data-key="tag_capcut">剪映</span>
+    </div>
+  </div>
+  <div class="skills-section">
+    <h2 data-key="skills_finance">金融专业</h2>
+    <div class="skill-tags">
+      <span class="skill-tag" data-key="tag_fin">国际金融学</span>
+      <span class="skill-tag" data-key="tag_data">数据分析</span>
+      <span class="skill-tag" data-key="tag_pest">PEST分析</span>
+      <span class="skill-tag" data-key="tag_cfa">备考CFA一级</span>
+    </div>
+  </div>
+  <div class="skills-section">
+    <h2 data-key="skills_lang">语言沟通</h2>
+    <div class="skill-tags">
+      <span class="skill-tag" data-key="tag_en">英语流利</span>
+      <span class="skill-tag" data-key="tag_cn">普通话二级甲等</span>
+      <span class="skill-tag" data-key="tag_write">写作与编辑</span>
+      <span class="skill-tag" data-key="tag_team">跨文化协作</span>
+    </div>
+  </div>
+  <div class="skills-section">
+    <h2 data-key="skills_mgmt">管理组织</h2>
+    <div class="skill-tags">
+      <span class="skill-tag" data-key="tag_em">突发事件处理</span>
+      <span class="skill-tag" data-key="tag_lead">团队领导</span>
+      <span class="skill-tag" data-key="tag_event">活动策划</span>
+      <span class="skill-tag" data-key="tag_resource">资源整合</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 生活剪影 — PHOTO GALLERY ===== -->
+<div class="section reveal" id="life">
+  <div class="section-label"><span data-key="life_label">生活剪影</span></div>
+  <div class="life-filter" id="lifeFilter">
+    <button class="life-filter-btn active" data-filter="all" data-key="filter_all">全部</button>
+    <button class="life-filter-btn" data-filter="amhky" data-key="filter_amhky">AMHKY</button>
+    <button class="life-filter-btn" data-filter="hobby" data-key="filter_hobby">爱好</button>
+    <button class="life-filter-btn" data-filter="family" data-key="filter_family">家人朋友</button>
+  </div>
+  <div class="life-filter" id="hobbySubFilter" style="display:none;">
+    <button class="life-filter-btn active" data-sub="all" data-key="filter_all">全部爱好</button>
+    <button class="life-filter-btn" data-sub="ski" data-key="filter_ski">滑雪</button>
+    <button class="life-filter-btn" data-sub="dance" data-key="filter_dance">舞蹈</button>
+    <button class="life-filter-btn" data-sub="travel" data-key="filter_travel">旅行</button>
+  </div>
+  <div class="life-grid" id="lifeGrid">
+
+    <!-- Skiing (爱好) -->
+    <div class="life-item wide" data-cat="hobby" data-subcat="ski"><img src="photos/ski_01.jpg" alt="滑雪" loading="lazy"><div class="life-caption"><span class="life-cat">滑雪</span><span data-key="life_ski">滑雪体验</span></div></div>
+    <div class="life-item" data-cat="hobby" data-subcat="ski"><img src="photos/ski_02.jpg" alt="滑雪" loading="lazy"><div class="life-caption"><span class="life-cat">滑雪</span><span data-key="life_ski">滑雪体验</span></div></div>
+
+    <!-- AMHKY -->
+    <div class="life-item" data-cat="amhky"><img src="photos/amhky_03.jpg" alt="AMHKY" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky">社团工作</span></div></div>
+    <div class="life-item" data-cat="amhky"><img src="photos/amhky_04.jpg" alt="AMHKY" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky">社团工作</span></div></div>
+    <div class="life-item" data-cat="amhky"><img src="photos/amhky_05.jpg" alt="AMHKY" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky">社团工作</span></div></div>
+    <div class="life-item" data-cat="amhky"><img src="photos/amhky_06.jpg" alt="AMHKY" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky">社团工作</span></div></div>
+    <div class="life-item" data-cat="amhky"><img src="photos/amhky_07.jpg" alt="AMHKY" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky">社团工作</span></div></div>
+    <div class="life-item big" data-cat="amhky"><img src="photos/amhky_orientation.jpg" alt="迎新营" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky1">400+人迎新营</span></div></div>
+    <div class="life-item" data-cat="amhky"><img src="photos/amhky_diplomacy.jpg" alt="外交活动" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky2">联校外事活动</span></div></div>
+    <div class="life-item" data-cat="amhky"><img src="photos/amhky_cruise.jpg" alt="邮轮晚宴" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky3">邮轮晚宴</span></div></div>
+
+    <!-- Dance (爱好) -->
+    <div class="life-item" data-cat="hobby" data-subcat="dance"><img src="photos/dance_01.jpg" alt="舞蹈" loading="lazy"><div class="life-caption"><span class="life-cat">舞蹈</span><span data-key="life_dance">与朋友们跳舞</span></div></div>
+    <div class="life-item" data-cat="hobby" data-subcat="dance"><img src="photos/dance_02.jpg" alt="舞蹈" loading="lazy"><div class="life-caption"><span class="life-cat">舞蹈</span><span data-key="life_dance">与朋友们跳舞</span></div></div>
+
+    <!-- Travel (爱好) -->
+    <div class="life-item wide" data-cat="hobby" data-subcat="travel"><img src="photos/uk_01.jpg" alt="英国" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_uk">英国之旅</span></div></div>
+    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/uk_04.jpg" alt="英国" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_uk">英国之旅</span></div></div>
+    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/uk_05.jpg" alt="英国" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_uk">英国之旅</span></div></div>
+    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/tibet_01.jpg" alt="西藏" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_tibet">西藏之旅</span></div></div>
+    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/tibet_04.jpg" alt="西藏" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_tibet">西藏之旅</span></div></div>
+    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/tibet_05.jpg" alt="西藏" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_tibet">西藏之旅</span></div></div>
+    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/beijing_01.jpg" alt="北京" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_beijing">北京 · UIBE 演讲课</span></div></div>
+    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/beijing_03.jpg" alt="北京" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_beijing">北京之旅</span></div></div>
+    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/beijing_04.jpg" alt="北京" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_beijing">北京之旅</span></div></div>
+    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/travel_cheungchau.jpg" alt="长洲岛" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_cheungchau">长洲岛之旅</span></div></div>
+    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/travel_zhuhai_01.jpg" alt="珠海" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_zhuhai">珠海之旅</span></div></div>
+    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/travel_zhuhai_02.jpg" alt="珠海" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_zhuhai">珠海之旅</span></div></div>
+
+    <!-- Family & Friends -->
+    <div class="life-item wide" data-cat="family"><img src="photos/family_01.jpg" alt="家庭" loading="lazy"><div class="life-caption"><span class="life-cat">家人</span><span data-key="life_family">温暖的家庭时光</span></div></div>
+    <div class="life-item tall" data-cat="family"><img src="photos/family_02.jpg" alt="家庭" loading="lazy"><div class="life-caption"><span class="life-cat">家人</span><span data-key="life_family">温暖的家庭时光</span></div></div>
+    <div class="life-item" data-cat="family"><img src="photos/family_03.jpg" alt="家庭" loading="lazy"><div class="life-caption"><span class="life-cat">家人</span><span data-key="life_family">温暖的家庭时光</span></div></div>
+    <div class="life-item" data-cat="family"><img src="photos/family_04.jpg" alt="家庭" loading="lazy"><div class="life-caption"><span class="life-cat">家人</span><span data-key="life_family">温暖的家庭时光</span></div></div>
+    <div class="life-item" data-cat="family"><img src="photos/friends_01.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
+    <div class="life-item" data-cat="family"><img src="photos/friends_02.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
+    <div class="life-item" data-cat="family"><img src="photos/friends_03.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
+    <div class="life-item" data-cat="family"><img src="photos/friends_04.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
+    <div class="life-item" data-cat="family"><img src="photos/friends_05.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
+    <div class="life-item" data-cat="family"><img src="photos/friends_06.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
+    <div class="life-item" data-cat="family"><img src="photos/friends_07.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
+    <div class="life-item" data-cat="family"><img src="photos/friends_08.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
+    <div class="life-item" data-cat="family"><img src="photos/friends_09.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
+    <div class="life-item" data-cat="family"><img src="photos/friends_10.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
+    <div class="life-item" data-cat="family"><img src="photos/friends_11.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
+    <div class="life-item" data-cat="family"><img src="photos/friends_12.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
+  </div>
+</div>
+
+<!-- ===== CONTACT ===== -->
+<div class="section reveal" id="contact">
+  <div class="section-label"><span data-key="contact_label">Contact</span></div>
+  <div class="contact-bar">
+    <a href="tel:+8618984327383" class="contact-item">
+      <div class="contact-item-icon">📱</div>
+      <div class="contact-item-info">
+        <h4 data-key="contact_phone">电话</h4>
+        <p>+86 189 8432 7383</p>
+      </div>
+    </a>
+    <a href="mailto:3528836178@qq.com" class="contact-item">
+      <div class="contact-item-icon">✉️</div>
+      <div class="contact-item-info">
+        <h4 data-key="contact_email">邮箱</h4>
+        <p>3528836178@qq.com</p>
+      </div>
+    </a>
+    <div class="contact-item">
+      <div class="contact-item-icon">💬</div>
+      <div class="contact-item-info">
+        <h4 data-key="contact_wechat">微信</h4>
+        <p>a18984327383</p>
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-item-icon">📍</div>
+      <div class="contact-item-info">
+        <h4 data-key="contact_loc">所在地</h4>
+        <p data-key="contact_loc_val">香港</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 我的家乡 · 贵州贵阳 ===== -->
+<div class="section reveal" id="guiyang">
+  <div class="section-label"><span data-key="gy_label">我的家乡 · 贵州贵阳</span></div>
+
+  <div class="gy-hero-card">
+    <div class="gy-hero-text">
+      <h2 class="serif" data-key="gy_title">贵阳，中国避暑之都</h2>
+      <p data-key="gy_intro">贵阳，简称"筑"，贵州省省会。平均海拔 1100 米，夏季平均气温 24°C，素有"中国避暑之都"的美誉。这座被群山环抱的城市，有着 55 个民族共同生活的多彩文化。</p>
+    </div>
+    <div class="gy-hero-stats">
+      <div class="gy-stat"><span class="gy-stat-num">1100m</span><span data-key="gy_stat1">平均海拔</span></div>
+      <div class="gy-stat"><span class="gy-stat-num">24°C</span><span data-key="gy_stat2">夏季均温</span></div>
+      <div class="gy-stat"><span class="gy-stat-num">55</span><span data-key="gy_stat3">民族共居</span></div>
+      <div class="gy-stat"><span class="gy-stat-num">666万</span><span data-key="gy_stat4">常住人口</span></div>
+    </div>
+  </div>
+
+  <div class="gy-gallery">
+    <div class="gy-gallery-hero"><img src="photos/gy_01.jpg" alt="贵州风光" loading="lazy"></div>
+    <div class="gy-gallery-row">
+      <div class="gy-gallery-item"><img src="photos/gy_02.jpg" alt="贵州风光" loading="lazy"></div>
+      <div class="gy-gallery-item"><img src="photos/gy_03.jpg" alt="贵州风光" loading="lazy"></div>
+      <div class="gy-gallery-item"><img src="photos/gy_04.jpg" alt="贵州风光" loading="lazy"></div>
+      <div class="gy-gallery-item"><img src="photos/gy_05.jpg" alt="贵州风光" loading="lazy"></div>
+    </div>
+  </div>
+
+  <div class="gy-grid">
+    <div class="gy-card">
+      <div class="gy-card-icon">🏔️</div>
+      <h3 data-key="gy_nature_title">山水之城</h3>
+      <p data-key="gy_nature_desc">贵阳因位于贵山之南而得名，南明河穿城而过，黔灵山、红枫湖、观山湖点缀其间。喀斯特地貌赋予这座城市独特的地质景观，山中有城、城中有山。</p>
+    </div>
+    <div class="gy-card">
+      <div class="gy-card-icon">📜</div>
+      <h3 data-key="gy_history_title">千年历史</h3>
+      <p data-key="gy_history_desc">三万年前就有人类在这片土地生活。春秋属牂牁，汉代设郡，明代建府，王阳明曾在此悟道讲学。甲秀楼、青岩古镇、阳明祠见证着这座城市的文化厚度。</p>
+    </div>
+    <div class="gy-card">
+      <div class="gy-card-icon">🌶️</div>
+      <h3 data-key="gy_food_title">舌尖贵阳</h3>
+      <p data-key="gy_food_desc">酸汤鱼、肠旺面、丝娃娃、花溪牛肉粉——贵阳美食以酸辣著称，55 个民族的饮食文化在这里碰撞融合。一碗肠旺面，一锅酸汤鱼，就是贵阳人的日常烟火。</p>
+    </div>
+    <div class="gy-card">
+      <div class="gy-card-icon">💻</div>
+      <h3 data-key="gy_tech_title">数谷贵阳</h3>
+      <p data-key="gy_tech_desc">贵阳不仅是生态旅游名城，更是中国大数据产业的核心区。数博会永久落户，腾讯、苹果、华为等巨头的数据中心纷纷落地，让这座西南山城站上了数字经济的潮头。</p>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <p data-key="footer">© 2026 李梁伶佳 Lianglingjia Li. All Rights Reserved.</p>
+    <div class="footer-links">
+      <a href="mailto:3528836178@qq.com" data-key="footer_email">3528836178@qq.com</a>
+      <span>·</span>
+      <a href="https://github.com/lilianglingjia" target="_blank">GitHub</a>
+    </div>
+  </div>
+  <button class="back-to-top" onclick="scrollToTop()" title="回到顶部">↑</button>
+</footer>
+
+<script>
+/* ================================================================
+   DATA — 双语内容
+   ================================================================ */
+const data = {
+  zh: {
+    nav_about: "关于", nav_exp: "经历", nav_skills: "技能", nav_life: "生活", nav_guiyang: "家乡", nav_contact: "联系",
+    hero_label: "Personal Portfolio", hero_name: "李梁伶佳", hero_title: "香港浸会大学 · 国际金融学",
+    hero_desc: "具备扎实的金融理论基础与数据分析能力，拥有突发事件处理与管理组织才能，能快速决策、带领团队克服困难。",
+    btn_contact: "联系我", btn_exp: "查看经历",
+    gallery_label: "Gallery",
+    about_label: "About & Education", edu_title: "教育背景",
+    edu_desc: "<strong>香港浸会大学</strong>（2024.09 - 2028.08）<br>BBA 工商管理学士，主修国际金融学（FINANCE）",
+    about_title: "个人简介",
+    about_sub: "香港在读金融生，坐标香港。热爱滑雪、跳舞、旅行，在金融与生活之间找到自己的节奏。",
+    about_desc: "实战派，不纸上谈兵。从融通国际、东亚银行到AXA安盛、雀巢项目，金融的保险、银行、资管、快消四条线都踩过。能扛事——400+人迎新营靠执行不靠运气；对新鲜事物有胃口——在银行实习主动接触AI，做商业策划直接落地AI+数据看板。活得有劲，冬天滑雪夏天跳舞，从西藏走到英国，在北京还修了对外经贸的英语演讲课。金融生的脑子，旅行者的心。",
+    hero_desc: "实战派，不纸上谈兵。从融通国际、东亚银行到AXA安盛、雀巢项目，金融的保险、银行、资管、快消四条线都踩过。能扛事——400+人迎新营靠执行不靠运气；对新鲜事物有胃口——在银行实习主动接触AI，做商业策划直接落地AI+数据看板。活得有劲，冬天滑雪夏天跳舞，从西藏走到英国，在北京还修了对外经贸的英语演讲课。金融生的脑子，旅行者的心。",
+    btn_about: "了解更多",
+    exp_label: "Experience",
+    exp2_date: "2026.02", exp2_title: "AXA 安盛", exp2_company: "线上项目",
+    exp2_1: "快速交付项目核心任务", exp2_2: "梳理流程提升协作效率", exp2_3: "获总监高度认可",
+    exp3_date: "2025.07", exp3_title: "东亚银行（天津）", exp3_company: "市场条线助理",
+    exp3_1: "市场业务运营与客户对接", exp3_2: "边干边学 AI 应用",
+    exp4_date: "2025.05", exp4_title: "融通国际资产管理", exp4_company: "商务拓展实习生 · 香港",
+    exp4_1: "官网内容更新与翻译", exp4_2: "基金合同翻译审核",
+    exp5_date: "2025.04 - 2026.04", exp5_title: "HKBU 内地香港青年联合会", exp5_company: "26届内务副主席",
+    exp5_1: "主导迎新营策划", exp5_2: "创办广东话班", exp5_3: "联校合作共赢",
+    exp6_date: "2024 - 2026", exp6_title: "商业竞赛", exp6_company: "多场比赛 & 商业策划",
+    exp6_1: "全港大专生商业个案比赛", exp6_2: "HKUFP Awards", exp6_3: "KPMG ESG比赛", exp6_4: "星火伙伴 · 雀巢母婴小店增长（AI+数据看板）",
+    skills_label: "Skills", skills_tools: "办公工具", skills_finance: "金融专业", skills_lang: "语言沟通", skills_mgmt: "管理组织",
+    tag_excel: "Excel 数据建模", tag_ppt: "PowerPoint", tag_xiumi: "秀米", tag_capcut: "剪映",
+    tag_fin: "国际金融学", tag_data: "数据分析", tag_pest: "PEST分析", tag_cfa: "备考CFA一级",
+    tag_en: "英语流利", tag_cn: "普通话二级甲等", tag_write: "写作与编辑", tag_team: "跨文化协作",
+    tag_em: "突发事件处理", tag_lead: "团队领导", tag_event: "活动策划", tag_resource: "资源整合",
+    life_label: "生活剪影",
+    filter_all: "全部", filter_amhky: "AMHKY", filter_hobby: "爱好", filter_family: "家人朋友",
+    life_ski: "滑雪体验", life_amhky: "社团工作", life_amhky1: "400+人迎新营", life_amhky2: "联校外事活动", life_amhky3: "邮轮晚宴",
+    life_dance: "与朋友们跳舞", life_uk: "英国之旅", life_tibet: "西藏之旅",
+    life_beijing: "北京之旅 · UIBE 演讲课", life_cheungchau: "长洲岛之旅", life_zhuhai: "珠海之旅", life_family: "温暖的家庭时光", life_friends: "珍贵的友谊",
+    contact_label: "Contact", contact_phone: "电话", contact_email: "邮箱", contact_wechat: "微信", contact_qr: "扫码添加", contact_qr_hint: "微信扫码即可添加", contact_loc: "所在地", contact_loc_val: "香港 / 贵阳",
+    gy_label: "我的家乡 · 贵州贵阳",
+    gy_title: "贵阳，中国避暑之都",
+    gy_intro: "贵阳，简称「筑」，贵州省省会。平均海拔 1100 米，夏季平均气温 24°C，素有「中国避暑之都」的美誉。这座被群山环抱的城市，有着 55 个民族共同生活的多彩文化。",
+    gy_stat1: "平均海拔", gy_stat2: "夏季均温", gy_stat3: "民族共居", gy_stat4: "常住人口",
+    gy_nature_title: "山水之城",
+    gy_nature_desc: "贵阳因位于贵山之南而得名，南明河穿城而过，黔灵山、红枫湖、观山湖点缀其间。喀斯特地貌赋予这座城市独特的地质景观，山中有城、城中有山。",
+    gy_history_title: "千年历史",
+    gy_history_desc: "三万年前就有人类在这片土地生活。春秋属牂牁，汉代设郡，明代建府，王阳明曾在此悟道讲学。甲秀楼、青岩古镇、阳明祠见证着这座城市的文化厚度。",
+    gy_food_title: "舌尖贵阳",
+    gy_food_desc: "酸汤鱼、肠旺面、丝娃娃、花溪牛肉粉——贵阳美食以酸辣著称，55 个民族的饮食文化在这里碰撞融合。一碗肠旺面，一锅酸汤鱼，就是贵阳人的日常烟火。",
+    gy_tech_title: "数谷贵阳",
+    gy_tech_desc: "贵阳不仅是生态旅游名城，更是中国大数据产业的核心区。数博会永久落户，腾讯、苹果、华为等巨头的数据中心纷纷落地，让这座西南山城站上了数字经济的潮头。",
+    nav_guiyang: "家乡",
+    footer: "© 2026 李梁伶佳 Lianglingjia Li. All Rights Reserved.",
+    footer_email: "3528836178@qq.com"
+  },
+  en: {
+    nav_about: "About", nav_exp: "Experience", nav_skills: "Skills", nav_life: "Life", nav_guiyang: "Hometown", nav_contact: "Contact",
+    hero_label: "Personal Portfolio", hero_name: "Arabella Li", hero_title: "HKBU · FINANCE",
+    hero_desc: "A hands-on doer. From Rongtong and BEA to AXA and Nestlé, I've worked across insurance, banking, asset management, and FMCG — not just resume lines, real experience.",
+    btn_about: "Learn More",
+    gallery_label: "Gallery",
+    about_label: "About & Education", edu_title: "Education",
+    edu_desc: "<strong>Hong Kong Baptist University</strong> (Sep 2024 – Aug 2028)<br>FINANCE",
+    about_title: "About Me",
+    about_sub: "Finance student in Hong Kong. Skiing, dancing, traveling — finding my rhythm between spreadsheets and snow slopes.",
+    about_desc: "A hands-on doer. From Rongtong and BEA to AXA and Nestlé, I've worked across insurance, banking, asset management, and FMCG — not just resume lines, real experience. I lead: 400+ orientation camp, built from scratch. I explore: picked up AI on the banking floor, deployed it in a real business case. I live: skiing in winter, dancing in summer, from Tibet to the UK, with a public speaking course at UIBE along the way. A finance brain, a traveler's heart.",
+    exp_label: "Experience",
+    exp2_date: "Feb 2026", exp2_title: "AXA", exp2_company: "Online Project",
+    exp2_1: "Delivered core project tasks", exp2_2: "Streamlined processes for efficiency", exp2_3: "Recognized by director",
+    exp3_date: "Jul 2025", exp3_title: "Bank of East Asia (Tianjin)", exp3_company: "Market Line Assistant",
+    exp3_1: "Market operations & client comms", exp3_2: "Learned AI on the job",
+    exp4_date: "May 2025", exp4_title: "Rongtong Global Investment", exp4_company: "BD Intern · Hong Kong",
+    exp4_1: "Website content & translation", exp4_2: "Fund contract review & formatting",
+    exp5_date: "Apr 2025 – Apr 2026", exp5_title: "HKBU Mainland-HK Youth Fed.", exp5_company: "Internal VP",
+    exp5_1: "Led orientation camp planning", exp5_2: "Founded Cantonese classes", exp5_3: "Inter-school partnerships",
+    exp6_date: "2024 - 2026", exp6_title: "Business Competitions", exp6_company: "Competitions & Business Plan",
+    exp6_1: "HK Business Case Competition", exp6_2: "HKUFP Awards", exp6_3: "KPMG ESG Competition", exp6_4: "Spark Partner · Nestlé Mom & Baby Store Growth (AI + Dashboard)",
+    skills_label: "Skills", skills_tools: "Tools", skills_finance: "Finance", skills_lang: "Languages", skills_mgmt: "Management",
+    tag_excel: "Excel Data Modeling", tag_ppt: "PowerPoint", tag_xiumi: "Xiumi", tag_capcut: "CapCut",
+    tag_fin: "Int'l Finance Theory", tag_data: "Data Analysis", tag_pest: "PEST Analysis", tag_cfa: "CFA Level I Prep",
+    tag_en: "Fluent English", tag_cn: "Mandarin 2A", tag_write: "Writing & Editing", tag_team: "Cross-cultural Teamwork",
+    tag_em: "Emergency Handling", tag_lead: "Team Leadership", tag_event: "Event Planning", tag_resource: "Resource Integration",
+    life_label: "Life Snapshots",
+    filter_all: "All", filter_amhky: "AMHKY", filter_hobby: "Hobbies", filter_family: "Family & Friends",
+    life_ski: "Skiing", life_amhky: "AMHKY Work", life_amhky1: "400+ Orientation Camp", life_amhky2: "Diplomatic Events", life_amhky3: "Cruise Dinner",
+    life_dance: "Dancing with Friends", life_uk: "UK Travel", life_tibet: "Tibet Journey",
+    life_beijing: "Beijing · UIBE Speech Course", life_cheungchau: "Cheung Chau Island", life_zhuhai: "Zhuhai Trip", life_family: "Family Moments", life_friends: "Cherished Friendships",
+    contact_label: "Contact", contact_phone: "Phone", contact_email: "Email", contact_wechat: "WeChat", contact_qr: "Scan QR", contact_qr_hint: "Scan to add on WeChat", contact_loc: "Location", contact_loc_val: "Hong Kong / Guiyang",
+    gy_label: "My Hometown · Guiyang, Guizhou",
+    gy_title: "Guiyang, China's Summer Capital",
+    gy_intro: "Guiyang, abbreviated as \"Zhu\", is the capital of Guizhou Province. At 1,100m elevation with an average summer temperature of 24°C, it's known as China's \"Summer Resort Capital.\" Surrounded by mountains, this city is home to 55 ethnic groups living together in rich cultural harmony.",
+    gy_stat1: "Elevation", gy_stat2: "Summer Avg", gy_stat3: "Ethnic Groups", gy_stat4: "Population",
+    gy_nature_title: "City of Mountains & Water",
+    gy_nature_desc: "Named for its location south of Gui Mountain, Guiyang is traversed by the Nanming River and dotted with Qianling Mountain, Hongfeng Lake, and Guanshan Lake. Its karst landscape creates a unique city where mountains and urban life intertwine.",
+    gy_history_title: "A Millennium of History",
+    gy_history_desc: "Human settlement here dates back 30,000 years. From the ancient Yelang kingdom through the Han, Ming, and Qing dynasties, Guiyang has been a crossroads of civilization. The philosopher Wang Yangming once taught here, and landmarks like Jiaxiu Pavilion and Qingyan Ancient Town bear witness to this cultural depth.",
+    gy_food_title: "A Taste of Guiyang",
+    gy_food_desc: "Sour soup fish, changwang noodles, silk dolls, Huaxi beef rice noodles — Guiyang cuisine is famous for its sour-spicy flavors, blending culinary traditions from 55 ethnic groups. A bowl of changwang noodles and a pot of sour soup fish capture the daily soul of this city.",
+    gy_tech_title: "China's Data Valley",
+    gy_tech_desc: "Beyond eco-tourism, Guiyang is a core hub of China's big data industry. Home to the permanent Big Data Expo, it hosts data centers for Tencent, Apple, and Huawei — transforming this southwestern mountain city into a rising star of the digital economy.",
+    nav_guiyang: "Hometown",
+    footer: "© 2026 Arabella Li. All Rights Reserved.",
+    footer_email: "3528836178@qq.com"
+  }
+};
+
+/* ===== State ===== */
+let currentLang = "zh";
+let currentTheme = "dark";
+
+/* ===== DOM refs ===== */
+const langBtn = document.getElementById("langBtn");
+const themeBtn = document.getElementById("themeBtn");
+const mobileToggle = document.getElementById("mobileToggle");
+const mobileOverlay = document.getElementById("mobileOverlay");
+const mobileClose = document.getElementById("mobileClose");
+const navbar = document.getElementById("navbar");
+
+/* ===== Event Listeners ===== */
+langBtn.addEventListener("click", () => setLanguage(currentLang === "zh" ? "en" : "zh"));
+themeBtn.addEventListener("click", toggleTheme);
+
+/* ================================================================
+   LANGUAGE SWITCH
+   ================================================================ */
+function setLanguage(lang) {
+  currentLang = lang;
+  langBtn.textContent = lang === "zh" ? "中" : "EN";
+  const dict = data[lang];
+  document.querySelectorAll("[data-key]").forEach(el => {
+    const key = el.getAttribute("data-key");
+    if (dict[key]) el.innerHTML = dict[key];
+  });
+  document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+}
+
+/* ================================================================
+   THEME TOGGLE
+   ================================================================ */
+function toggleTheme() {
+  currentTheme = currentTheme === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", currentTheme);
+  themeBtn.textContent = currentTheme === "dark" ? "☀" : "☾";
+  localStorage.setItem("theme", currentTheme);
+}
+
+/* ================================================================
+   HERO LINE-BY-LINE REVEAL
+   ================================================================ */
+(function() {
+  const lines = document.querySelectorAll(".hero-line");
+  lines.forEach(line => {
+    const delay = parseInt(line.getAttribute("data-delay") || "0");
+    setTimeout(() => { line.classList.add("revealed"); }, delay * 180 + 200);
+  });
+})();
+
+/* ================================================================
+   INTERSECTION OBSERVER — SCROLL REVEAL
+   ================================================================ */
+(function() {
+  const observerOptions = { threshold: 0.15, rootMargin: "0px 0px -40px 0px" };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("revealed");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll(".reveal, .reveal-stagger").forEach(el => observer.observe(el));
+})();
+
+/* ================================================================
+   PHOTO GALLERY FILTER — 二级筛选
+   ================================================================ */
+(function() {
+  const mainBtns = document.querySelectorAll("#lifeFilter .life-filter-btn");
+  const subBtns = document.querySelectorAll("#hobbySubFilter .life-filter-btn");
+  const subRow = document.getElementById("hobbySubFilter");
+  const items = document.querySelectorAll(".life-item");
+
+  let currentCat = "all";
+  let currentSub = "all";
+
+  function applyFilter() {
+    items.forEach(item => {
+      const cat = item.getAttribute("data-cat");
+      const sub = item.getAttribute("data-subcat");
+      let show = true;
+      if (currentCat !== "all") {
+        if (currentCat === "hobby") {
+          if (cat !== "hobby") show = false;
+          else if (currentSub !== "all" && sub !== currentSub) show = false;
+        } else {
+          if (cat !== currentCat) show = false;
+        }
+      }
+      item.classList.toggle("hidden", !show);
+    });
+  }
+
+  mainBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      mainBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentCat = btn.getAttribute("data-filter");
+      currentSub = "all";
+
+      // Show/hide sub-filter row
+      if (currentCat === "hobby") {
+        subRow.style.display = "flex";
+        subBtns.forEach(b => b.classList.remove("active"));
+        subBtns[0].classList.add("active");
+      } else {
+        subRow.style.display = "none";
+      }
+
+      applyFilter();
+    });
+  });
+
+  subBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      subBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentSub = btn.getAttribute("data-sub");
+      applyFilter();
+    });
+  });
+})();
+
+/* ================================================================
+   MOBILE MENU
+   ================================================================ */
+mobileToggle.addEventListener("click", () => {
+  mobileOverlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+});
+mobileClose.addEventListener("click", closeMobileMenu);
+mobileOverlay.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", closeMobileMenu);
+});
+function closeMobileMenu() {
+  mobileOverlay.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+/* ================================================================
+   SCROLL SPY + NAV SHADOW
+   ================================================================ */
+window.addEventListener("scroll", () => {
+  const sections = document.querySelectorAll("[id]");
+  let current = "";
+  sections.forEach(sec => {
+    const top = sec.offsetTop - 140;
+    if (scrollY >= top) current = sec.getAttribute("id");
+  });
+  document.querySelectorAll(".nav-link").forEach(link => {
+    link.classList.remove("active");
+    if (link.getAttribute("href") === "#" + current) link.classList.add("active");
+  });
+  if (window.scrollY > 30) {
+    navbar.classList.add("scrolled");
+  } else {
+    navbar.classList.remove("scrolled");
+  }
+});
+
+/* ================================================================
+   UTILITY
+   ================================================================ */
+function scrollToTop() { window.scrollTo({ top: 0, behavior: "smooth" }); }
+
+/* ================================================================
+   INIT
+   ================================================================ */
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) {
+  currentTheme = savedTheme;
+  document.documentElement.setAttribute("data-theme", currentTheme);
+  themeBtn.textContent = currentTheme === "dark" ? "☀" : "☾";
+}
+setLanguage("zh");
+
+/* ================================================================
+   LIGHTBOX — 点击照片展开
+   ================================================================ */
+(function() {
+  const lb = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lbImg");
+  const lbCap = document.getElementById("lbCaption");
+  const lbClose = document.getElementById("lbClose");
+  const lbPrev = document.getElementById("lbPrev");
+  const lbNext = document.getElementById("lbNext");
+
+  let galleryItems = [];
+  let currentIdx = 0;
+
+  function open(imgSrc, caption) {
+    galleryItems = Array.from(document.querySelectorAll(".life-item:not(.hidden)"));
+    currentIdx = galleryItems.findIndex(item => item.querySelector("img").src === imgSrc);
+    showCurrent();
+    lb.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function showCurrent() {
+    if (currentIdx < 0 || currentIdx >= galleryItems.length) return;
+    const item = galleryItems[currentIdx];
+    const img = item.querySelector("img");
+    const cap = item.querySelector(".life-caption");
+    lbImg.src = img.src;
+    lbCap.textContent = cap ? cap.textContent.trim() : "";
+    lbPrev.style.visibility = currentIdx > 0 ? "visible" : "hidden";
+    lbNext.style.visibility = currentIdx < galleryItems.length - 1 ? "visible" : "hidden";
+  }
+
+  function close() {
+    lb.classList.remove("open");
+    document.body.style.overflow = "";
+    lbImg.src = "";
+  }
+
+  function prev() { if (currentIdx > 0) { currentIdx--; showCurrent(); } }
+  function next() { if (currentIdx < galleryItems.length - 1) { currentIdx++; showCurrent(); } }
+
+  // Click on any gallery photo
+  document.querySelector("#lifeGrid").addEventListener("click", function(e) {
+    const item = e.target.closest(".life-item");
+    if (!item || item.classList.contains("hidden")) return;
+    const img = item.querySelector("img");
+    const cap = item.querySelector(".life-caption");
+    open(img.src, cap ? cap.textContent.trim() : "");
+  });
+
+  // Close
+  lbClose.addEventListener("click", close);
+  lb.addEventListener("click", function(e) {
+    if (e.target === lb) close();
+  });
+
+  // Arrows
+  lbPrev.addEventListener("click", function(e) { e.stopPropagation(); prev(); });
+  lbNext.addEventListener("click", function(e) { e.stopPropagation(); next(); });
+
+  // Keyboard
+  document.addEventListener("keydown", function(e) {
+    if (!lb.classList.contains("open")) return;
+    if (e.key === "Escape") close();
+    if (e.key === "ArrowLeft") prev();
+    if (e.key === "ArrowRight") next();
+  });
+})();
+
+/* ================================================================
+   COUNTER ANIMATION — 贵阳数字滚动
+   ================================================================ */
+(function() {
+  const stats = document.querySelectorAll(".gy-stat-num");
+  if (!stats.length) return;
+  const targets = [];
+  stats.forEach(el => {
+    const text = el.textContent.trim();
+    const num = parseFloat(text.replace(/[^0-9.]/g, ''));
+    const suffix = text.replace(/[0-9.]/g, '').trim();
+    if (!isNaN(num)) {
+      targets.push({ el, target: num, suffix, current: 0 });
+      el.textContent = '0' + suffix;
+    }
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        targets.forEach(t => {
+          const duration = 1500;
+          const start = performance.now();
+          function tick(now) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            t.current = Math.round(t.target * eased);
+            t.el.textContent = t.current + t.suffix;
+            if (progress < 1) requestAnimationFrame(tick);
+          }
+          requestAnimationFrame(tick);
+        });
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+  if (stats[0]) observer.observe(stats[0].closest('.gy-hero-stats') || stats[0]);
+})();
+
+/* ================================================================
+   PARALLAX — 贵阳画廊视差
+   ================================================================ */
+(function() {
+  const gallery = document.querySelector('.gy-gallery');
+  if (!gallery) return;
+  window.addEventListener('scroll', () => {
+    const rect = gallery.getBoundingClientRect();
+    const windowH = window.innerHeight;
+    if (rect.top < windowH && rect.bottom > 0) {
+      const progress = (windowH - rect.top) / (windowH + rect.height);
+      const offset = (progress - 0.5) * 20;
+      gallery.style.transform = `translateY(${offset}px)`;
+    }
+  }, { passive: true });
+})();
+
+/* ================================================================
+   RIPPLE EFFECT — buttons
+   ================================================================ */
+document.querySelectorAll(".btn-primary, .btn-secondary").forEach(btn => {
+  btn.addEventListener("click", function(e) {
+    const ripple = document.createElement("span");
+    const rect = btn.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.cssText = `
+      position:absolute; border-radius:50%;
+      width:${size}px; height:${size}px;
+      left:${e.clientX - rect.left - size/2}px;
+      top:${e.clientY - rect.top - size/2}px;
+      background:rgba(255,255,255,0.2);
+      transform:scale(0); animation:ripple 0.5s ease-out;
+      pointer-events:none;
+    `;
+    btn.appendChild(ripple);
+    ripple.addEventListener("animationend", () => ripple.remove());
+  });
+});
+</script>
+<style>
+@keyframes ripple {
+  to { transform: scale(2.5); opacity: 0; }
+}
+</style>
+
+</body>
+</html>
