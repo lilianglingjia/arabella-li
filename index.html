@@ -413,9 +413,7 @@ main { position: relative; z-index: 1; }
   .timeline { padding-left: 24px; }
   .tl-item { padding-left: 32px; }
   .tl-dot { left: -20px; width: 10px; height: 10px; }
-  .life-item.wide { grid-column: span 1; }
-  .life-item.tall { grid-row: span 1; }
-  .life-item.big { grid-column: span 2; grid-row: span 1; }
+  .life-cards { grid-template-columns: repeat(2, 1fr); gap: 14px; }
 }
 
 /* ===== Skills Tags ===== */
@@ -440,67 +438,94 @@ main { position: relative; z-index: 1; }
 }
 
 /* ================================================================
-   生活剪影 — Photo Gallery with category filter
+   生活剪影 — 每类一张精选照片，卡片式布局
    ================================================================ */
-.life-filter {
-  display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px;
+.life-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
-.life-filter-btn {
-  padding: 8px 22px; border-radius: 20px;
-  border: 1px solid var(--border); background: transparent;
-  color: var(--text-secondary); font-size: 0.8rem;
-  font-weight: 500; cursor: pointer; transition: all 0.3s;
-  letter-spacing: 0.5px;
-}
-.life-filter-btn:hover {
-  border-color: var(--accent); color: var(--accent);
-}
-.life-filter-btn.active {
-  background: var(--accent-glow); border-color: var(--accent); color: var(--accent);
-}
-
-.life-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-  grid-auto-flow: dense;
-  grid-auto-rows: 200px;
-}
-.life-item {
-  position: relative; border-radius: var(--card-radius);
-  overflow: hidden; cursor: pointer;
+.life-card {
+  position: relative;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 3 / 4;
   border: 1px solid var(--border);
-  transition: all 0.35s;
-  aspect-ratio: auto;
-  min-height: 0;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
 }
-.life-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-.life-item:hover img { transform: scale(1.1); filter: brightness(0.85); }
-/* Bento sizes */
-.life-item.wide { grid-column: span 2; }
-.life-item.tall { grid-row: span 2; }
-.life-item.big { grid-column: span 2; grid-row: span 2; }
-.life-item.hidden {
-  display: none;
-}
-.life-item:hover {
-  transform: translateY(-5px) scale(1.02);
+.life-card:hover {
+  transform: translateY(-6px);
   border-color: var(--accent);
-  box-shadow: 0 20px 48px rgba(0,0,0,0.4);
+  box-shadow: 0 24px 56px rgba(0,0,0,0.45);
 }
-.life-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-.life-item:hover img { transform: scale(1.1); filter: brightness(0.85); }
+.life-card:active { transform: scale(0.98); transition: all 0.1s; }
 
-.life-caption {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 16px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.75));
-  color: #fff; font-size: 0.78rem; font-weight: 500;
-  opacity: 0; transform: translateY(8px);
-  transition: all 0.3s;
+.life-card-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1.2);
 }
-.life-item:hover .life-caption { opacity: 1; transform: translateY(0); }
-.life-caption .life-cat {
-  font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase;
-  opacity: 0.7; display: block; margin-bottom: 2px;
+.life-card:hover .life-card-img {
+  transform: scale(1.06);
+}
+
+.life-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(6,10,18,0.1) 0%,
+    rgba(6,10,18,0.0) 35%,
+    rgba(6,10,18,0.45) 65%,
+    rgba(6,10,18,0.85) 100%
+  );
+  pointer-events: none;
+  transition: background 0.4s;
+}
+.life-card:hover .life-card-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(6,10,18,0.15) 0%,
+    rgba(6,10,18,0.0) 30%,
+    rgba(6,10,18,0.55) 60%,
+    rgba(6,10,18,0.9) 100%
+  );
+}
+
+.life-card-icon {
+  position: absolute; top: 20px; left: 20px;
+  font-size: 1.5rem;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+  transition: transform 0.3s;
+  pointer-events: none;
+}
+.life-card:hover .life-card-icon { transform: translateY(-3px); }
+
+.life-card-content {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 28px 24px 24px;
+  pointer-events: none;
+}
+.life-card-tag {
+  display: block;
+  font-size: 0.62rem; letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-light);
+  margin-bottom: 6px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+.life-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+}
+.life-card-sub {
+  display: block;
+  font-size: 0.78rem; color: rgba(255,255,255,0.7);
+  margin-top: 4px;
+  font-weight: 400;
 }
 
 /* ===== Contact Bar ===== */
@@ -610,7 +635,7 @@ footer {
   .hero-photo-ring img { width: 280px; height: 280px; }
   .info-grid { grid-template-columns: 1fr; }
   .contact-bar { grid-template-columns: repeat(2, 1fr); }
-  .life-grid { grid-template-columns: repeat(3, 1fr); }
+  .life-cards { grid-template-columns: repeat(2, 1fr); }
   .nav-links { display: none; }
   .mobile-toggle { display: block; }
   .section { padding: 80px 32px 0; }
@@ -625,7 +650,7 @@ footer {
   .hero-body { font-size: 0.88rem; }
   .hero-photo-ring { width: 260px; height: 260px; }
   .hero-photo-ring img { width: 244px; height: 244px; }
-  .life-grid { grid-template-columns: repeat(2, 1fr); }
+  .life-cards { grid-template-columns: repeat(2, 1fr); }
   .section { padding: 60px 20px 0; }
   .nav-container { padding: 0 24px; }
   :root { --section-gap: 60px; }
@@ -643,9 +668,7 @@ footer {
   .hero-photo-ring { width: 200px; height: 200px; }
   .hero-photo-ring img { width: 188px; height: 188px; }
   .contact-bar { grid-template-columns: 1fr 1fr; }
-  .life-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .life-filter { gap: 6px; }
-  .life-filter-btn { padding: 6px 14px; font-size: 0.72rem; }
+  .life-cards { grid-template-columns: 1fr; gap: 16px; }
   .section { padding: 48px 16px 0; }
   .nav-container { padding: 0 16px; }
   .photo-item { width: 180px; height: 250px; }
@@ -1014,72 +1037,77 @@ footer {
   </div>
 </div>
 
-<!-- ===== 生活剪影 — PHOTO GALLERY ===== -->
+<!-- ===== 生活剪影 — 每类一张精选照片 ===== -->
 <div class="section reveal" id="life">
   <div class="section-label"><span data-key="life_label">生活剪影</span></div>
-  <div class="life-filter" id="lifeFilter">
-    <button class="life-filter-btn active" data-filter="all" data-key="filter_all">全部</button>
-    <button class="life-filter-btn" data-filter="amhky" data-key="filter_amhky">AMHKY</button>
-    <button class="life-filter-btn" data-filter="hobby" data-key="filter_hobby">爱好</button>
-    <button class="life-filter-btn" data-filter="family" data-key="filter_family">家人朋友</button>
-  </div>
-  <div class="life-filter" id="hobbySubFilter" style="display:none;">
-    <button class="life-filter-btn active" data-sub="all" data-key="filter_all">全部爱好</button>
-    <button class="life-filter-btn" data-sub="ski" data-key="filter_ski">滑雪</button>
-    <button class="life-filter-btn" data-sub="dance" data-key="filter_dance">舞蹈</button>
-    <button class="life-filter-btn" data-sub="travel" data-key="filter_travel">旅行</button>
-  </div>
-  <div class="life-grid" id="lifeGrid">
+  <div class="life-cards">
 
-    <!-- Skiing (爱好) -->
-    <div class="life-item wide" data-cat="hobby" data-subcat="ski"><img src="photos/ski_01.jpg" alt="滑雪" loading="lazy"><div class="life-caption"><span class="life-cat">滑雪</span><span data-key="life_ski">滑雪体验</span></div></div>
-    <div class="life-item" data-cat="hobby" data-subcat="ski"><img src="photos/ski_02.jpg" alt="滑雪" loading="lazy"><div class="life-caption"><span class="life-cat">滑雪</span><span data-key="life_ski">滑雪体验</span></div></div>
+    <div class="life-card" data-life-cat="ski">
+      <img class="life-card-img" src="photos/ski_01.jpg" alt="滑雪" loading="lazy">
+      <div class="life-card-overlay"></div>
+      <div class="life-card-icon">🏔️</div>
+      <div class="life-card-content">
+        <span class="life-card-tag" data-key="life_tag_ski">滑雪</span>
+        <div class="life-card-title" data-key="life_title_ski">雪地上的速度与自由</div>
+        <span class="life-card-sub" data-key="life_sub_ski">冬天最期待的事</span>
+      </div>
+    </div>
 
-    <!-- AMHKY -->
-    <div class="life-item" data-cat="amhky"><img src="photos/amhky_03.jpg" alt="AMHKY" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky">社团工作</span></div></div>
-    <div class="life-item" data-cat="amhky"><img src="photos/amhky_04.jpg" alt="AMHKY" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky">社团工作</span></div></div>
-    <div class="life-item" data-cat="amhky"><img src="photos/amhky_05.jpg" alt="AMHKY" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky">社团工作</span></div></div>
-    <div class="life-item" data-cat="amhky"><img src="photos/amhky_06.jpg" alt="AMHKY" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky">社团工作</span></div></div>
-    <div class="life-item" data-cat="amhky"><img src="photos/amhky_07.jpg" alt="AMHKY" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky">社团工作</span></div></div>
-    <div class="life-item big" data-cat="amhky"><img src="photos/amhky_orientation.jpg" alt="迎新营" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky1">400+人迎新营</span></div></div>
-    <div class="life-item" data-cat="amhky"><img src="photos/amhky_diplomacy.jpg" alt="外交活动" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky2">联校外事活动</span></div></div>
-    <div class="life-item" data-cat="amhky"><img src="photos/amhky_cruise.jpg" alt="邮轮晚宴" loading="lazy"><div class="life-caption"><span class="life-cat">AMHKY</span><span data-key="life_amhky3">邮轮晚宴</span></div></div>
+    <div class="life-card" data-life-cat="amhky">
+      <img class="life-card-img" src="photos/amhky_orientation.jpg" alt="AMHKY 迎新营" loading="lazy">
+      <div class="life-card-overlay"></div>
+      <div class="life-card-icon">🏛️</div>
+      <div class="life-card-content">
+        <span class="life-card-tag" data-key="life_tag_amhky">AMHKY</span>
+        <div class="life-card-title" data-key="life_title_amhky">400+ 人迎新营</div>
+        <span class="life-card-sub" data-key="life_sub_amhky">从零到一的社团经历</span>
+      </div>
+    </div>
 
-    <!-- Dance (爱好) -->
-    <div class="life-item" data-cat="hobby" data-subcat="dance"><img src="photos/dance_01.jpg" alt="舞蹈" loading="lazy"><div class="life-caption"><span class="life-cat">舞蹈</span><span data-key="life_dance">与朋友们跳舞</span></div></div>
-    <div class="life-item" data-cat="hobby" data-subcat="dance"><img src="photos/dance_02.jpg" alt="舞蹈" loading="lazy"><div class="life-caption"><span class="life-cat">舞蹈</span><span data-key="life_dance">与朋友们跳舞</span></div></div>
+    <div class="life-card" data-life-cat="dance">
+      <img class="life-card-img" src="photos/dance_01.jpg" alt="舞蹈" loading="lazy">
+      <div class="life-card-overlay"></div>
+      <div class="life-card-icon">💃</div>
+      <div class="life-card-content">
+        <span class="life-card-tag" data-key="life_tag_dance">舞蹈</span>
+        <div class="life-card-title" data-key="life_title_dance">舞台上的另一个我</div>
+        <span class="life-card-sub" data-key="life_sub_dance">和朋友们一起跳舞</span>
+      </div>
+    </div>
 
-    <!-- Travel (爱好) -->
-    <div class="life-item wide" data-cat="hobby" data-subcat="travel"><img src="photos/uk_01.jpg" alt="英国" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_uk">英国之旅</span></div></div>
-    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/uk_04.jpg" alt="英国" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_uk">英国之旅</span></div></div>
-    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/uk_05.jpg" alt="英国" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_uk">英国之旅</span></div></div>
-    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/tibet_01.jpg" alt="西藏" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_tibet">西藏之旅</span></div></div>
-    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/tibet_04.jpg" alt="西藏" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_tibet">西藏之旅</span></div></div>
-    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/tibet_05.jpg" alt="西藏" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_tibet">西藏之旅</span></div></div>
-    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/beijing_01.jpg" alt="北京" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_beijing">北京 · UIBE 演讲课</span></div></div>
-    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/beijing_03.jpg" alt="北京" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_beijing">北京之旅</span></div></div>
-    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/beijing_04.jpg" alt="北京" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_beijing">北京之旅</span></div></div>
-    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/travel_cheungchau.jpg" alt="长洲岛" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_cheungchau">长洲岛之旅</span></div></div>
-    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/travel_zhuhai_01.jpg" alt="珠海" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_zhuhai">珠海之旅</span></div></div>
-    <div class="life-item" data-cat="hobby" data-subcat="travel"><img src="photos/travel_zhuhai_02.jpg" alt="珠海" loading="lazy"><div class="life-caption"><span class="life-cat">旅行</span><span data-key="life_zhuhai">珠海之旅</span></div></div>
+    <div class="life-card" data-life-cat="travel">
+      <img class="life-card-img" src="photos/uk_01.jpg" alt="旅行" loading="lazy">
+      <div class="life-card-overlay"></div>
+      <div class="life-card-icon">✈️</div>
+      <div class="life-card-content">
+        <span class="life-card-tag" data-key="life_tag_travel">旅行</span>
+        <div class="life-card-title" data-key="life_title_travel">从西藏到英国</div>
+        <span class="life-card-sub" data-key="life_sub_travel">用脚步丈量世界</span>
+      </div>
+    </div>
 
-    <!-- Family & Friends -->
-    <div class="life-item wide" data-cat="family"><img src="photos/family_01.jpg" alt="家庭" loading="lazy"><div class="life-caption"><span class="life-cat">家人</span><span data-key="life_family">温暖的家庭时光</span></div></div>
-    <div class="life-item tall" data-cat="family"><img src="photos/family_02.jpg" alt="家庭" loading="lazy"><div class="life-caption"><span class="life-cat">家人</span><span data-key="life_family">温暖的家庭时光</span></div></div>
-    <div class="life-item" data-cat="family"><img src="photos/family_03.jpg" alt="家庭" loading="lazy"><div class="life-caption"><span class="life-cat">家人</span><span data-key="life_family">温暖的家庭时光</span></div></div>
-    <div class="life-item" data-cat="family"><img src="photos/family_04.jpg" alt="家庭" loading="lazy"><div class="life-caption"><span class="life-cat">家人</span><span data-key="life_family">温暖的家庭时光</span></div></div>
-    <div class="life-item" data-cat="family"><img src="photos/friends_01.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
-    <div class="life-item" data-cat="family"><img src="photos/friends_02.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
-    <div class="life-item" data-cat="family"><img src="photos/friends_03.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
-    <div class="life-item" data-cat="family"><img src="photos/friends_04.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
-    <div class="life-item" data-cat="family"><img src="photos/friends_05.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
-    <div class="life-item" data-cat="family"><img src="photos/friends_06.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
-    <div class="life-item" data-cat="family"><img src="photos/friends_07.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
-    <div class="life-item" data-cat="family"><img src="photos/friends_08.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
-    <div class="life-item" data-cat="family"><img src="photos/friends_09.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
-    <div class="life-item" data-cat="family"><img src="photos/friends_10.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
-    <div class="life-item" data-cat="family"><img src="photos/friends_11.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
-    <div class="life-item" data-cat="family"><img src="photos/friends_12.jpg" alt="朋友" loading="lazy"><div class="life-caption"><span class="life-cat">朋友</span><span data-key="life_friends">珍贵的友谊</span></div></div>
+    <div class="life-card" data-life-cat="family">
+      <img class="life-card-img" src="photos/family_01.jpg" alt="家人" loading="lazy">
+      <div class="life-card-overlay"></div>
+      <div class="life-card-icon">🏠</div>
+      <div class="life-card-content">
+        <span class="life-card-tag" data-key="life_tag_family">家人</span>
+        <div class="life-card-title" data-key="life_title_family">最温暖的港湾</div>
+        <span class="life-card-sub" data-key="life_sub_family">无论走多远都知道有人在等你</span>
+      </div>
+    </div>
+
+    <div class="life-card" data-life-cat="friends">
+      <img class="life-card-img" src="photos/friends_01.jpg" alt="朋友" loading="lazy">
+      <div class="life-card-overlay"></div>
+      <div class="life-card-icon">🥂</div>
+      <div class="life-card-content">
+        <span class="life-card-tag" data-key="life_tag_friends">朋友</span>
+        <div class="life-card-title" data-key="life_title_friends">一起疯一起成长</div>
+        <span class="life-card-sub" data-key="life_sub_friends">珍贵的友谊</span>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -1219,9 +1247,15 @@ const data = {
     tag_em: "突发事件处理", tag_lead: "团队领导", tag_event: "活动策划", tag_resource: "资源整合",
     life_label: "生活剪影",
     filter_all: "全部", filter_amhky: "AMHKY", filter_hobby: "爱好", filter_family: "家人朋友",
-    life_ski: "滑雪体验", life_amhky: "社团工作", life_amhky1: "400+人迎新营", life_amhky2: "联校外事活动", life_amhky3: "邮轮晚宴",
-    life_dance: "与朋友们跳舞", life_uk: "英国之旅", life_tibet: "西藏之旅",
-    life_beijing: "北京之旅 · UIBE 演讲课", life_cheungchau: "长洲岛之旅", life_zhuhai: "珠海之旅", life_family: "温暖的家庭时光", life_friends: "珍贵的友谊",
+    life_ski: "滑雪体验", life_amhky: "社团工作",
+    life_dance: "与朋友们跳舞",
+    life_family: "温暖的家庭时光", life_friends: "珍贵的友谊",
+    life_tag_ski: "滑雪", life_title_ski: "雪地上的速度与自由", life_sub_ski: "冬天最期待的事",
+    life_tag_amhky: "AMHKY", life_title_amhky: "400+ 人迎新营", life_sub_amhky: "从零到一的社团经历",
+    life_tag_dance: "舞蹈", life_title_dance: "舞台上的另一个我", life_sub_dance: "和朋友们一起跳舞",
+    life_tag_travel: "旅行", life_title_travel: "从西藏到英国", life_sub_travel: "用脚步丈量世界",
+    life_tag_family: "家人", life_title_family: "最温暖的港湾", life_sub_family: "无论走多远都知道有人在等你",
+    life_tag_friends: "朋友", life_title_friends: "一起疯一起成长", life_sub_friends: "珍贵的友谊",
     contact_label: "Contact", contact_phone: "电话", contact_email: "邮箱", contact_wechat: "微信", contact_qr: "扫码添加", contact_qr_hint: "微信扫码即可添加", contact_loc: "所在地", contact_loc_val: "香港 / 贵阳",
     gy_label: "我的家乡 · 贵州贵阳",
     gy_title: "贵阳，中国避暑之都",
@@ -1268,9 +1302,15 @@ const data = {
     tag_em: "Emergency Handling", tag_lead: "Team Leadership", tag_event: "Event Planning", tag_resource: "Resource Integration",
     life_label: "Life Snapshots",
     filter_all: "All", filter_amhky: "AMHKY", filter_hobby: "Hobbies", filter_family: "Family & Friends",
-    life_ski: "Skiing", life_amhky: "AMHKY Work", life_amhky1: "400+ Orientation Camp", life_amhky2: "Diplomatic Events", life_amhky3: "Cruise Dinner",
-    life_dance: "Dancing with Friends", life_uk: "UK Travel", life_tibet: "Tibet Journey",
-    life_beijing: "Beijing · UIBE Speech Course", life_cheungchau: "Cheung Chau Island", life_zhuhai: "Zhuhai Trip", life_family: "Family Moments", life_friends: "Cherished Friendships",
+    life_ski: "Skiing", life_amhky: "AMHKY Work",
+    life_dance: "Dancing with Friends",
+    life_family: "Family Moments", life_friends: "Cherished Friendships",
+    life_tag_ski: "Skiing", life_title_ski: "Speed & Freedom on Snow", life_sub_ski: "My favorite winter thing",
+    life_tag_amhky: "AMHKY", life_title_amhky: "400+ Orientation Camp", life_sub_amhky: "Building from scratch",
+    life_tag_dance: "Dance", life_title_dance: "Another Me on Stage", life_sub_dance: "Dancing with friends",
+    life_tag_travel: "Travel", life_title_travel: "From Tibet to the UK", life_sub_travel: "Exploring the world step by step",
+    life_tag_family: "Family", life_title_family: "My Warmest Harbor", life_sub_family: "No matter how far I go, someone is waiting",
+    life_tag_friends: "Friends", life_title_friends: "Growing Up Together", life_sub_friends: "Cherished friendships",
     contact_label: "Contact", contact_phone: "Phone", contact_email: "Email", contact_wechat: "WeChat", contact_qr: "Scan QR", contact_qr_hint: "Scan to add on WeChat", contact_loc: "Location", contact_loc_val: "Hong Kong / Guiyang",
     gy_label: "My Hometown · Guiyang, Guizhou",
     gy_title: "Guiyang, China's Summer Capital",
@@ -1359,65 +1399,6 @@ function toggleTheme() {
 })();
 
 /* ================================================================
-   PHOTO GALLERY FILTER — 二级筛选
-   ================================================================ */
-(function() {
-  const mainBtns = document.querySelectorAll("#lifeFilter .life-filter-btn");
-  const subBtns = document.querySelectorAll("#hobbySubFilter .life-filter-btn");
-  const subRow = document.getElementById("hobbySubFilter");
-  const items = document.querySelectorAll(".life-item");
-
-  let currentCat = "all";
-  let currentSub = "all";
-
-  function applyFilter() {
-    items.forEach(item => {
-      const cat = item.getAttribute("data-cat");
-      const sub = item.getAttribute("data-subcat");
-      let show = true;
-      if (currentCat !== "all") {
-        if (currentCat === "hobby") {
-          if (cat !== "hobby") show = false;
-          else if (currentSub !== "all" && sub !== currentSub) show = false;
-        } else {
-          if (cat !== currentCat) show = false;
-        }
-      }
-      item.classList.toggle("hidden", !show);
-    });
-  }
-
-  mainBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      mainBtns.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      currentCat = btn.getAttribute("data-filter");
-      currentSub = "all";
-
-      // Show/hide sub-filter row
-      if (currentCat === "hobby") {
-        subRow.style.display = "flex";
-        subBtns.forEach(b => b.classList.remove("active"));
-        subBtns[0].classList.add("active");
-      } else {
-        subRow.style.display = "none";
-      }
-
-      applyFilter();
-    });
-  });
-
-  subBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      subBtns.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      currentSub = btn.getAttribute("data-sub");
-      applyFilter();
-    });
-  });
-})();
-
-/* ================================================================
    MOBILE MENU
    ================================================================ */
 mobileToggle.addEventListener("click", () => {
@@ -1485,7 +1466,7 @@ setLanguage("zh");
   let currentIdx = 0;
 
   function open(imgSrc, caption) {
-    galleryItems = Array.from(document.querySelectorAll(".life-item:not(.hidden)"));
+    galleryItems = Array.from(document.querySelectorAll(".life-card"));
     currentIdx = galleryItems.findIndex(item => item.querySelector("img").src === imgSrc);
     showCurrent();
     lb.classList.add("open");
@@ -1496,9 +1477,10 @@ setLanguage("zh");
     if (currentIdx < 0 || currentIdx >= galleryItems.length) return;
     const item = galleryItems[currentIdx];
     const img = item.querySelector("img");
-    const cap = item.querySelector(".life-caption");
+    const title = item.querySelector(".life-card-title");
+    const tag = item.querySelector(".life-card-tag");
     lbImg.src = img.src;
-    lbCap.textContent = cap ? cap.textContent.trim() : "";
+    lbCap.innerHTML = (tag ? '<span style="display:block;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-bottom:4px">' + tag.textContent + '</span>' : '') + (title ? title.textContent : '');
     lbPrev.style.visibility = currentIdx > 0 ? "visible" : "hidden";
     lbNext.style.visibility = currentIdx < galleryItems.length - 1 ? "visible" : "hidden";
   }
@@ -1512,13 +1494,12 @@ setLanguage("zh");
   function prev() { if (currentIdx > 0) { currentIdx--; showCurrent(); } }
   function next() { if (currentIdx < galleryItems.length - 1) { currentIdx++; showCurrent(); } }
 
-  // Click on any gallery photo
-  document.querySelector("#lifeGrid").addEventListener("click", function(e) {
-    const item = e.target.closest(".life-item");
-    if (!item || item.classList.contains("hidden")) return;
+  // Click on any life card
+  document.querySelector(".life-cards").addEventListener("click", function(e) {
+    const item = e.target.closest(".life-card");
+    if (!item) return;
     const img = item.querySelector("img");
-    const cap = item.querySelector(".life-caption");
-    open(img.src, cap ? cap.textContent.trim() : "");
+    open(img.src, "");
   });
 
   // Close
